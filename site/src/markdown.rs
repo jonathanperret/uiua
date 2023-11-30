@@ -116,7 +116,11 @@ fn node_view<'a>(node: &'a AstNode<'a>) -> View {
             } else {
                 view!(<code class="code-block">{&block.literal}</code>).into_view()
             }
-        }
+        },
+        NodeValue::Image(link) => {
+            let text = leaf_text(node).unwrap_or_default();
+            view!(<img src={&link.url} alt={text} title={&link.title}/>).into_view()
+        },
         _ => children.into_view(),
     }
 }
