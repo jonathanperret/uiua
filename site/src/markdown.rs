@@ -112,7 +112,7 @@ fn node_view<'a>(node: &'a AstNode<'a>) -> View {
                     .1
                     .is_empty()
             {
-                view!(<Editor example={block.literal.trim_end()}/>).into_view()
+                view!(<Editor no_run={block.info == "no_run"} example={block.literal.trim_end()}/>).into_view()
             } else {
                 view!(<code class="code-block">{&block.literal}</code>).into_view()
             }
