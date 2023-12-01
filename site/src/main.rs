@@ -201,7 +201,7 @@ pub fn Prim(
     } else {
         "".to_string()
     };
-    let href = format!("/docs/{}", prim.name());
+    let href = format!("https://www.uiua.org/docs/{}", prim.name());
     let mut title = String::new();
     if let Some(ascii) = prim.ascii() {
         title.push_str(&format!("({})", ascii));
