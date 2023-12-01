@@ -4,6 +4,8 @@ use leptos_router::*;
 
 use crate::markdown::*;
 
+const SITE_TITLE: &str = "Advent of Code 2023 avec Uiua";
+
 #[derive(Debug, Clone, PartialEq, Eq, Params)]
 pub struct BlogParams {
     page: BlogParam,
@@ -40,8 +42,8 @@ pub fn Blog() -> impl IntoView {
 #[component]
 fn BlogHome() -> impl IntoView {
     view! {
-        <Title text="Uiua Blog"/>
-        <h1>"Uiua Blog"</h1>
+        <Title text={SITE_TITLE}/>
+        <h1>{SITE_TITLE}</h1>
         <Fetch src="/blog/list.txt" f=|list| {
             list.lines().map(|name| {
                 let (path, name) = name.split_once(": ").unwrap_or_default();
@@ -57,13 +59,13 @@ fn BlogHome() -> impl IntoView {
 #[component]
 fn BlogPage(name: String) -> impl IntoView {
     view! {
-        <Title text={format!("{name} - Uiua Blog")}/>
-        <A href="/blog">"Back to Blog Home"</A>
+        <Title text={format!("{name} - {SITE_TITLE}")}/>
+        <A href="/">"Retour"</A>
         <br/>
         <br/>
         <Markdown src={format!("/blog/{name}-text.md")}/>
         <br/>
         <br/>
-        <A href="/blog">"Back to Blog Home"</A>
+        <A href="/">"Retour"</A>
     }
 }
