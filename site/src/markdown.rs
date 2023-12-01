@@ -89,7 +89,7 @@ fn node_view<'a>(node: &'a AstNode<'a>) -> View {
         NodeValue::Paragraph => view!(<p>{children}</p>).into_view(),
         NodeValue::Code(code) => {
             if let Some(prim) = Primitive::from_name(&code.literal) {
-                view!(<Prim prim=prim glyph_only=true/>).into_view()
+                view!(<Prim prim=prim glyph_only=false/>).into_view()
             } else {
                 view!(<code>{&code.literal}</code>).into_view()
             }
