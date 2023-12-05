@@ -20,7 +20,7 @@ use uiua::{ConstantDef, PrimClass, Primitive, Signature};
 use wasm_bindgen::JsCast;
 use web_sys::HtmlAudioElement;
 
-use crate::{blog::*, docs::*, editor::*, other::*, tour::*, uiuisms::*};
+use crate::{blog::*, editor::*};
 
 pub fn main() {
     console_error_panic_hook::set_once();
@@ -36,89 +36,7 @@ pub fn main() {
 
 #[component]
 pub fn Site() -> impl IntoView {
-    use Primitive::*;
     provide_meta_context();
-
-    // Choose a subtitle
-    let subtitles = [
-        "A stack-based array programming language".into_view(),
-        "An array-oriented tacit programming language".into_view(),
-        "A programming language for point-free enjoyers".into_view(),
-        "A programming language for variable dislikers".into_view(),
-        view!("Check out "<a href="https://arraycast.com/">"The Array Cast"</a>).into_view(),
-        view!(<a href="https://youtu.be/seVSlKazsNk">"Point-Free or Die"</a>).into_view(),
-        view! {
-            <div style="font-style: normal">
-                <a href="/docs/advancedstack#planet-notation" style="text-decoration: none">"🌍🪐"</a>" "
-                <code style="font-style: normal">
-                    <span class="monadic-modifier">"⋅⋅⊙⋅⋅"</span>
-                    <span class="stack-function">"∘"</span>
-                </code>
-            </div>
-        }
-        .into_view(),
-        view! {
-            <div class="long-subtitle">
-                <div style="display: flex; gap: 0.5em;">
-                    <div style="font-style: normal"><Prims prims=[Try, Assert]/></div>
-                    " Dad! Can we go play outside?"
-                </div>
-                <div style="display: flex; gap: 0.5em;">
-                    <div style="font-style: normal"><Prim prim=Repeat glyph_only=true/></div>
-                    " Finish your code challenges first!"
-                </div>
-            </div>
-        }
-        .into_view(),
-        "It's got um...I um...arrays".into_view(),
-        view! {
-            <div class="long-subtitle">
-                <div>
-                    <div style="font-style: normal"><Prim prim=Try/></div>
-                    " Hey bro! Throw me the error!"
-                    <div style="font-style: normal"><Prim prim=Assert/></div>
-                </div>
-                <div>
-                    <div style="font-style: normal"><Prims prims=[Repeat, Do]/></div>
-                    " Kids! Dinner's ready! Who wants "
-                    <div class="spoiler">"control flow"</div>
-                    "?"
-                </div>
-            </div>
-        }
-        .into_view(),
-        view! {
-                <div style="display: flex; gap: 0.5em;">
-                    "A "<div style="font-style: normal"><Prim prim=Fork/></div>
-                    " is worth a thousand "<div style="font-style: normal"><Prim prim=Dip/></div>"s."
-                </div>
-        }.into_view(),
-        view! {
-            <div class="long-subtitle">
-                <div>
-                    <div style="font-style: normal"><Prim prim=Repeat/></div>
-                    " Sometimes I miss the days when I could break"
-                </div>
-                <div>
-                    <div style="font-style: normal"><Prim prim=Do/></div>
-                    " Oh honey, don't be silly. That's why you have me ❤️"
-                </div>
-            </div>
-        }
-        .into_view(),
-    ];
-    let local_storage = window().local_storage().unwrap().unwrap();
-    let mut visits: usize = local_storage
-        .get_item("visits")
-        .ok()
-        .flatten()
-        .and_then(|s| s.parse().ok())
-        .unwrap_or(0);
-    let subtitle = subtitles[visits % subtitles.len()].clone();
-    visits = visits.overflowing_add(1).0;
-    local_storage
-        .set_item("visits", &visits.to_string())
-        .unwrap();
 
     view! {
         <Router>
@@ -128,29 +46,12 @@ pub fn Site() -> impl IntoView {
                     <Route path="*" view=move || view! {
                         <main>
                             <div id="top">
-                                <div id="header">
-                                    <div id="header-left">
-                                        <h1><A id="header-uiua" href="/"><img src="/uiua-logo.png" style="height: 1em" alt="Uiua logo" />" Uiua"</A></h1>
-                                        <p id="subtitle">{ subtitle.clone() }</p>
-                                    </div>
-                                    <div id="nav">
-                                        <a class="pls-no-block" href="https://github.com/sponsors/uiua-lang">"Support Uiua's development"</a>
-                                        <a href="/">"Home"</a>
-                                    </div>
-                                </div>
                                 <Outlet/>
                             </div>
                         </main>
                     }>
-                        <Route path="" view=MainPage/>
-                        <Route path="docs/:page?" view=Docs/>
-                        <Route path="isms/:search?" view=Uiuisms/>
-                        <Route path="pad" view=Pad/>
-                        <Route path="install" view=Install/>
-                        <Route path="tour" view=Tour/>
-                        <Route path="isms" view=Uiuisms/>
-                        <Route path="rtl" view=RightToLeft/>
                         <Route path="blog/:page?" view=Blog/>
+                        <Route path=":page?" view=Blog/>
                         <Route path="*" view=NotFound/>
                     </Route>
                 </Routes>
